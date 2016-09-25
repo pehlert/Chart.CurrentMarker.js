@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Chart.CurrentMarker.JS Example</title>
+
+	<script type="application/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.bundle.js"></script>
+	<script type="application/javascript" src="../Chart.CurrentMarker.js"></script>
+
+	<style>
+		body { background-color: #2c3a4d; }
+		#container {
+			height: 400px;
+			width: 800px;
+		}
+	</style>
+</head>
+<body>
+	<div id="container">
+		<canvas id="chart" />
+	</div>
+
+	<script>
+		var sampleData = [];
+		var dataPoints = 200;
+		for (var i=0; i < dataPoints; i++) {
+			sampleData.push({
+				x: new Date("2016-01-01 12:00").valueOf() + i * 1000,
+				y: 1234 + Math.random()
+			});
+		}
+		var canvas = document.getElementById('chart');
+	    var ctx = canvas.getContext('2d');
+	    var gradient = ctx.createLinearGradient(0, 0, 0, 300);
+	    gradient.addColorStop(0, 'rgba(46, 153, 122, 0.6)');
+	    gradient.addColorStop(1, 'rgba(52, 90, 111, 0.4)');
+
+	    var chart = new Chart(this.canvas, {
+	      type: 'scatter',
+	      data: {
+	        labels: [],
+	        datasets: [Object.assign({}, {
+	          label: 'EURUSD',
+	          lineTension: 0,
+	          pointRadius: 0,
+	          backgroundColor: gradient,
+	          borderColor: '#3EDCAB',
+	          borderWidth: 1,
+	          data: sampleData
+	        })]
+	      },
+	      options: {
+	        legend: {
+	          display: false
+	        },
+	        currentMarker: {
+	          decimals: 4,
+            lineWidth: 1,
+            lineColor: 'rgba(46, 153, 122, 1)',
+            lineDash: [5, 3],
+            textColor: 'rgb(255, 255, 255)',
+            font: '18px Helvetica'
+          },
+	        scales: {
+	          xScalePaddingRight: 100,
+	          xAxes: [{
+	            type: 'time',
+	            time: {
+	              unit: 'minute',
+	              displayFormats: {
+	                minute: 'dd h:mm'
+	              }
+	            },
+	            ticks: {
+	              maxRotation: 0
+	            }
+	          }],
+	          yAxes: [{
+	            type: 'linear',
+	            ticks: {}
+	          }],
+	          gridLines: {
+	            color: 'rgba(255, 255, 255, .5)'
+	          }
+	        }
+	      }
+	    });
+	</script>
+</body>
+</html>
