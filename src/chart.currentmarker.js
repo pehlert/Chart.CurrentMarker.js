@@ -1,14 +1,16 @@
 class CurrentMarkerLine extends Chart.Element {
   constructor(args) {
     super(args);
+    this.setConfig(args.config || {});
+  }
 
-    args.config = args.config || {};
+  setConfig(config) {
     this.config = {
-      lineWidth: args.config.lineWidth || 1,
-      lineColor: args.config.lineColor || 'rgba(46, 153, 122, 1)',
-      lineDash: args.config.lineDash || [5, 3],
-      textColor: args.config.textColor || 'rgb(255, 255, 255)',
-      font: args.config.font || '18px Helvetica'
+      lineWidth: config.lineWidth || 1,
+      lineColor: config.lineColor || 'rgba(46, 153, 122, 1)',
+      lineDash: config.lineDash || [5, 3],
+      textColor: config.textColor || 'rgb(255, 255, 255)',
+      font: config.font || '18px Helvetica'
     };
   }
 
@@ -64,6 +66,11 @@ class CurrentMarkerPlugin extends Chart.PluginBase {
   beforeInit(chartInstance) {
     this.config = chartInstance.options.currentMarker || {};
     chartInstance._currentMarker = new CurrentMarkerLine({ _index: 0, config: this.config });
+  }
+
+  beforeDraw(chartInstance) {
+    this.config = chartInstance.options.currentMarker || {};
+    chartInstance._currentMarker.setConfig(this.config);
   }
 
   afterDraw(chartInstance, easingDecimal) {
