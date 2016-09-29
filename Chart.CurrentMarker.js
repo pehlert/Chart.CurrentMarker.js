@@ -1,7 +1,7 @@
 /*!
  * Chart.CurrentMarker.js
  * http://www.threerabbits.io/opensource/
- * Version: 0.1.0
+ * Version: 0.1.2
  *
  * Copyright 2016 Pascal Ehlert
  * Released under the MIT license
@@ -25,18 +25,22 @@ var CurrentMarkerLine = function (_Chart$Element) {
 
     var _this = _possibleConstructorReturn(this, (CurrentMarkerLine.__proto__ || Object.getPrototypeOf(CurrentMarkerLine)).call(this, args));
 
-    args.config = args.config || {};
-    _this.config = {
-      lineWidth: args.config.lineWidth || 1,
-      lineColor: args.config.lineColor || 'rgba(46, 153, 122, 1)',
-      lineDash: args.config.lineDash || [5, 3],
-      textColor: args.config.textColor || 'rgb(255, 255, 255)',
-      font: args.config.font || '18px Helvetica'
-    };
+    _this.setConfig(args.config || {});
     return _this;
   }
 
   _createClass(CurrentMarkerLine, [{
+    key: 'setConfig',
+    value: function setConfig(config) {
+      this.config = {
+        lineWidth: config.lineWidth || 1,
+        lineColor: config.lineColor || 'rgba(46, 153, 122, 1)',
+        lineDash: config.lineDash || [5, 3],
+        textColor: config.textColor || 'rgb(255, 255, 255)',
+        font: config.font || '18px Helvetica'
+      };
+    }
+  }, {
     key: 'draw',
     value: function draw(ctx) {
       ctx.save();
@@ -103,6 +107,12 @@ var CurrentMarkerPlugin = function (_Chart$PluginBase) {
     value: function beforeInit(chartInstance) {
       this.config = chartInstance.options.currentMarker || {};
       chartInstance._currentMarker = new CurrentMarkerLine({ _index: 0, config: this.config });
+    }
+  }, {
+    key: 'beforeDraw',
+    value: function beforeDraw(chartInstance) {
+      this.config = chartInstance.options.currentMarker || {};
+      chartInstance._currentMarker.setConfig(this.config);
     }
   }, {
     key: 'afterDraw',
